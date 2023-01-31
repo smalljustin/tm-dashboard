@@ -7,5 +7,5 @@ version = "1.9.4"
 blocks = [ "Plugin_Dashboard" ]
 
 [script]
-dependencies = [ "VehicleState" ]
+dependencies = [ "VehicleState", "Camera" ]
 timeout = 0

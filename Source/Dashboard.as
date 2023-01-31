@@ -40,6 +40,10 @@ class Dashboard
 	{
 		auto app = GetApp();
 
+		if (app is null || app.GameScene is null) {
+			return;
+		}
+
 		if (Setting_General_HideWhenNotPlaying) {
 			if (app.CurrentPlayground !is null && (app.CurrentPlayground.UIConfigs.Length > 0)) {
 				if (app.CurrentPlayground.UIConfigs[0].UISequence == CGamePlaygroundUIConfig::EUISequence::Intro) {
