@@ -5,10 +5,11 @@ class Dashboard
 
 	int visState_length = 0;
 	int active_visState;
-	bool show_circles = true;
+	bool show_circles = false;
 	bool alt_car_selection = false;
 	int circle_radius = 20;
 
+	int distance_thresh = 3;
 
 	Dashboard()
 	{
@@ -52,7 +53,6 @@ class Dashboard
 			}
 		}
 
-
 		CSceneVehicleVisState@ visState;
 
 		if (VehicleState::GetAllVis(GetApp().GameScene).Length != visState_length) {
@@ -61,6 +61,8 @@ class Dashboard
 		}
 
 		renderCircles();
+		doDistanceBasedSetting();
+
 		
 		if (!alt_car_selection) {
 			@visState = @VehicleState::ViewingPlayerState();
@@ -82,6 +84,27 @@ class Dashboard
 			}
 		}
 
+	}
+
+	void doDistanceBasedSetting() {
+		float min_dist = (VehicleState::GetAllVis(GetApp().GameScene)[active_visState].AsyncState.Position - Camera::GetCurrentPosition()).LengthSquared();
+		float idx = -1;
+		for (int i = 0; i < visState_length; i++) {
+			vec3 pos = VehicleState::GetAllVis(GetApp().GameScene)[i].AsyncState.Position;
+			if (Camera::IsBehind(pos)) {
+				continue;
+			}
+			float dist = (pos - Camera::GetCurrentPosition()).LengthSquared();
+			if (dist < min_dist) {
+				idx = i;
+				min_dist = dist;
+			}
+		}
+
+		if (idx != -1) {
+			alt_car_selection = true;
+			active_visState = idx;
+		}
 	}
 
 
