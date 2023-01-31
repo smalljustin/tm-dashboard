@@ -45,3 +45,10 @@ void Main()
 	@g_dashboard = Dashboard();
 	g_dashboard.Main();
 }
+
+/** Called whenever a mouse button is pressed. `x` and `y` are the viewport coordinates.
+*/
+UI::InputBlocking OnMouseButton(bool down, int button, int x, int y) {
+	g_dashboard.OnMouseButton(down, button, x, y);
+	return UI::InputBlocking::DoNothing;
+}
